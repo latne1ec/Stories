@@ -7,6 +7,15 @@
 //
 
 #import "AppDelegate.h"
+#import <Parse/Parse.h>
+#import <ParseUI/ParseUI.h>
+
+
+
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+
+
 
 @interface AppDelegate ()
 
@@ -16,7 +25,40 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    
+    
+    [Parse setApplicationId:@"UaGnyAmcvVo2aDaCaHf0bnNm0c5IyjyiSCSip75i"
+                  clientKey:@"CR1zqHWJ8FdsZWgf43IjSJbxuckMT83UZRCS7Kba"];
+    
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    [PFImageView class];
+    
+    
+    
+    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0xeeeded)];
+    
+    //21201f
+    //eeeded
+    
+    
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = [UIColor clearColor];
+    shadow.shadowOffset = CGSizeMake(0, .0);
+    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                          [UIColor colorWithRed:0.867 green:0.243 blue:0.243 alpha:1], NSForegroundColorAttributeName,
+                                                          shadow, NSShadowAttributeName,
+                                                          [UIFont fontWithName:@"AvenirNext-Medium" size:28], NSFontAttributeName, nil]];
+    
+    
+
+    //colorWithRed:0.867 green:0.243 blue:0.243 alpha:1] -- red color
+    //colorWithRed:0.141 green:0.129 blue:0.129 alpha:1] -- black color
+    
+    
+    
+    
     return YES;
 }
 
@@ -35,7 +77,21 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+//    if ([PFUser currentUser]) {
+//        
+//        UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
+//        
+//        [navController popToRootViewControllerAnimated:NO];
+//        
+//    }
+// 
+//    else {
+//        
+//        NSLog(@"Not a user yet");
+//    }
+    
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
