@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
-#import "HomeTableViewController.h"
-#import "CameraViewController.h"
 #import "ProgressHUD.h"
+#import "StoriesTableViewController.h"
 
-@interface WelcomeViewController : UIViewController <CLLocationManagerDelegate>
+@interface WelcomeViewController : UIViewController <CLLocationManagerDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIButton *okButton;
 
@@ -22,9 +21,13 @@
 +(CLAuthorizationStatus)authorizationStatus;
 
 @property (nonatomic, strong) PFGeoPoint *userLocation;
-
 @property (nonatomic, strong) CLLocationManager *locaManager;
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundPic;
 
+@property (nonatomic, assign) UIScrollView *scrollView;
+
+
+- (IBAction)linkToTerms:(id)sender;
 
 
 

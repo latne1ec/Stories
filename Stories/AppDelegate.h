@@ -7,12 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CameraViewController.h"
 #import "WelcomeViewController.h"
+#import "StoriesTableViewController.h"
+#import "StoriesNavController.h"
+#import "YZSwipeBetweenViewController.h"
+
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong) YZSwipeBetweenViewController *swipeBetweenVC;
+
+- (void)setupRootViewControllerForWindow;
 
 
 @end

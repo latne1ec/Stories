@@ -29,6 +29,8 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
 @property (atomic) BOOL isAnimating;
 @property (strong,nonatomic) UIImageView * topImageView;
 @property (strong,nonatomic) UIImageView * bottomImageView;
+@property (nonatomic, strong) NSMutableArray *daBombArray;
+
 
 @end
 
@@ -39,6 +41,7 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
 @synthesize transitionDuration;
 @synthesize transitionType;
 @synthesize images;
+@synthesize daBombArray;
 
 - (void)awakeFromNib
 {
@@ -78,6 +81,7 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
 {
     self.clipsToBounds = YES;
     self.images = [NSMutableArray array];
+    self.daBombArray = [NSMutableArray array];
     _currentIndex = 0;
     delay = 3;
     
@@ -95,6 +99,7 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
     
     [self addSubview:_bottomImageView];
     [self addSubview:_topImageView];
+    
 }
 
 - (void) setImagesContentMode:(UIViewContentMode)mode
@@ -127,32 +132,110 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
     }
 }
 
-- (void) addImagesFromResources:(NSArray *) names
-{
+- (void) addImagesFromResources:(NSArray *) names {
     
+    //old is below
     for(NSString * name in names){
         [self addImage:[UIImage imageNamed:name]];
     }
-    
     
 }
 
 - (void) setImagesDataSource:(NSMutableArray *)array {
     self.images = array;
     
-    _topImageView.image = [array firstObject];
+    NSMutableArray *unique = [NSMutableArray array];
+    
+    for (id obj in array) {
+        if (![unique containsObject:obj]) {
+            NSLog(@"woooah man");
+            
+            [unique addObject:obj];
+        }
+        
+        if ([unique containsObject:obj]) {
+            
+            [unique removeObject:obj];
+        }
+    }
+    
+    NSArray * newArray = [[NSOrderedSet orderedSetWithArray:unique] array];
+    
+    
+    
+    _topImageView.image = [newArray firstObject];
+    
+    //_topImageView.image = [newArray objectAtIndex:_currentIndex];
 }
 
-- (void) addImage:(UIImage*) image
-{
+- (void) addImage:(UIImage*) image {
+    
+    if (image == nil) {
+        
+    }
+    
+    else {
+        
+    
+        
+   // NSLog(@"Slideshow Count: %lu", (unsigned long)self.images.count);
+        
     [self.images addObject:image];
+        
+        
+//        NSMutableArray *unique = [NSMutableArray array];
+//        
+//        for (UIImage *object in self.images) {
+//            
+//            if (![unique containsObject:object]) {
+//                [unique addObject:object];
+//                
+//                NSLog(@"OBJECT ID: %@", object);
+//            }
+//            
+//        }
+//        
+//        
+//        self.daBombArray = [unique copy];
+        
+        
+        
+        
+        
     
     if([self.images count] == 1){
+        NSLog(@"11111");
         _topImageView.image = image;
-    }else if([self.images count] == 2){
+    }
+    else if([self.images count] == 2){
+        NSLog(@"222222");
         _bottomImageView.image = image;
     }
+        
+    }
+
 }
+
+
+////////////////888888
+
+- (void) emptyAndAddImages:(UIImage *)image {
+
+    self.images = nil;
+    
+    [self.images removeAllObjects];
+    _currentIndex = 0;
+    [self addImage:image];
+    
+    [self.images removeLastObject];
+    [self.images removeObjectAtIndex:_currentIndex];
+    
+}
+
+////////////////888888
+
+
+
 
 - (void) emptyAndAddImagesFromResources:(NSArray *)names
 {
@@ -167,21 +250,58 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
     [self next];
 }
 
-- (void) next
-{
+- (void) next {
+                                             
+    
+    if (self.images.count >2) {
+        
+
+    NSUInteger nextPic = (_currentIndex+1)%[self.images count];
+    
+    if ([self.daBombArray containsObject:self.images[nextPic]]) {
+        
+        NSLog(@"ALREADY SHOWED");
+        
+        [self.delegate performSelector:@selector(disableTap)];
+        
+    }
+    
+    else {
+        
+        NSLog(@"Not showed");
+   
+        [self.delegate performSelector:@selector(enableTap)];
+    
+
+    
     if(! _isAnimating && ([self.images count] >1 || self.dataSource)) {
         
         if ([self.delegate respondsToSelector:@selector(kaSlideShowWillShowNext:)]) [self.delegate kaSlideShowWillShowNext:self];
         
         // Next Image
         if (self.dataSource) {
+            NSLog(@"DATASORUCE");
             _topImageView.image = [self.dataSource slideShow:self imageForPosition:KASlideShowPositionTop];
             _bottomImageView.image = [self.dataSource slideShow:self imageForPosition:KASlideShowPositionBottom];
-        } else {
+        }
+        
+        else {
+            
             NSUInteger nextIndex = (_currentIndex+1)%[self.images count];
             _topImageView.image = self.images[_currentIndex];
             _bottomImageView.image = self.images[nextIndex];
+            [self.daBombArray addObject:self.images[_currentIndex]];
+            NSLog(@"CURRENT IMAGE == %@", self.images[_currentIndex]);
             _currentIndex = nextIndex;
+            
+            
+            NSLog(@"BOMB ARRAY COUNT: %lu", (unsigned long)self.daBombArray.count);
+            
+            //[self.daBombArray addObject:self.images[_currentIndex]];
+            
+            //NSLog(@"CURRENT IMAGE == %@", self.images[_currentIndex]);
+            
+            
         }
         
         // Animate
@@ -199,6 +319,9 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
         // Call delegate
         if([delegate respondsToSelector:@selector(kaSlideShowDidNext:)]){
             [delegate kaSlideShowDidNext:self];
+        }
+        
+            }
         }
     }
 }
@@ -304,12 +427,13 @@ typedef NS_ENUM(NSInteger, KASlideShowSlideMode) {
 }
 
 
-- (void) stop
-{
+- (void) stop {
+    
     _doStop = YES;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(next) object:nil];
+    
 }
-
+//
 - (KASlideShowState)state
 {
     return !_doStop;

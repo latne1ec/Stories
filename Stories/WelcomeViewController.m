@@ -7,7 +7,7 @@
 //
 
 #import "WelcomeViewController.h"
-
+#import "VideoCameraController.h"
 
 
 @interface WelcomeViewController ()
@@ -19,7 +19,14 @@
 @synthesize okButton;
 @synthesize userLocation;
 @synthesize locaManager;
+@synthesize backgroundPic;
+@synthesize scrollView;
 
+
+-(BOOL)prefersStatusBarHidden {
+    
+    return NO;
+}
 
 
 - (void)viewDidLoad {
@@ -38,6 +45,14 @@
     
     //self.view.backgroundColor = [UIColor colorWithRed:0.933 green:0.929 blue:0.929 alpha:1];
     
+    //[self getConfig];
+    
+    self.scrollView.delegate = self;
+    
+    
+    self.scrollView.scrollEnabled = NO;
+    
+    
     
     
 }
@@ -50,6 +65,8 @@
     
     [PFUser enableAutomaticUser];
     [[PFUser currentUser] incrementKey:@"RunCount"];
+    [[PFUser currentUser] setValue:@"anon" forKey:@"userStatus"];
+    [[PFUser currentUser] incrementKey:@"userScore" byAmount:[NSNumber numberWithInt:100]];
     [[PFUser currentUser] saveInBackground];
     NSLog(@"Created User");
     
@@ -60,7 +77,7 @@
 
     
     [self getLocation];
-    
+        
     
 }
 
@@ -105,6 +122,7 @@
     
     
     [[PFUser currentUser] setValue:@"Disabled" forKey:@"LocationStatus"];
+    [[PFUser currentUser] setValue:@"anon" forKey:@"userStatus"];
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         
         if (succeeded) {
@@ -117,7 +135,7 @@
     
     
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hold up" message:@"Campus Stories needs your location in order to work. To enable location services, go to your settings, tap privacy, tap locations services, find Campus Stories and turn it on." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hold up" message:@"Stories needs your location in order to work. To enable location services, go to your settings, tap privacy, tap locations services, find Stories and turn it on." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
     
     [alert show];
     
@@ -133,13 +151,14 @@
         NSLog(@"YOOOOOO");
         
         [[PFUser currentUser] setValue:@"Enabled" forKey:@"LocationStatus"];
+        [[PFUser currentUser] setValue:@"anon" forKey:@"userStatus"];
         [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             
             if (succeeded) {
                 
                 [ProgressHUD dismiss];
-                CameraViewController *cvc = [self.storyboard instantiateViewControllerWithIdentifier:@"Camera"];                
-                [self.navigationController pushViewController:cvc animated:NO];
+                VideoCameraController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"VideoCamera"];
+                [self.navigationController pushViewController:vc animated:NO];
                 
                 
             }
@@ -174,5 +193,11 @@
     
 }
 
+ 
 
+- (IBAction)linkToTerms:(id)sender {
+    
+     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://grubhunt.co/terms.html"]];
+    
+}
 @end

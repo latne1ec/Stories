@@ -68,6 +68,13 @@ typedef NS_ENUM(NSUInteger, KASlideShowState) {
 @property  (readonly, nonatomic) KASlideShowState state;
 
 - (void) addImagesFromResources:(NSArray *) names;
+
+///
+
+- (void) emptyAndAddImages:(UIImage *)image;
+
+
+///
 - (void) emptyAndAddImagesFromResources:(NSArray *)names;
 - (void) setImagesDataSource:(NSMutableArray *)array;
 - (void) addGesture:(KASlideShowGestureType)gestureType;
@@ -76,6 +83,10 @@ typedef NS_ENUM(NSUInteger, KASlideShowState) {
 - (void) stop;
 - (void) previous;
 - (void) next;
+- (void) disableTap;
+- (void) enableTap;
+
+
 
 @end
 

@@ -208,8 +208,10 @@
     }
 }
 
--(IBAction)showFrontCamera:(id)sender
-{
+
+
+-(IBAction)showFrontCamera:(id)sender {
+    
     if (self.isCapturingImage != YES) {
         if (self.captureDevice == [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo][0]) {
             // rear active, switch to front
@@ -272,6 +274,9 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     self.selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    NSLog(@"THERE");
+    
     
     [self dismissViewControllerAnimated:YES completion:^{
         self.capturedImageView.image = self.selectedImage;

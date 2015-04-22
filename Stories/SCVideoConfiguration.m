@@ -50,8 +50,8 @@ static CGSize MakeVideoSize(CGSize videoSize, float requestedWidth) {
             bitrate = 500000;
             outputSize = MakeVideoSize(videoSize, 640);
         } else if ([self.preset isEqualToString:SCPresetMediumQuality]) {
-            bitrate = 1000000;
-            outputSize = MakeVideoSize(videoSize, 1280);
+            bitrate = 850000;
+            outputSize = MakeVideoSize(videoSize, 320);
         } else if ([self.preset isEqualToString:SCPresetHighestQuality]) {
             bitrate = 6000000;
             outputSize = MakeVideoSize(videoSize, 1920);

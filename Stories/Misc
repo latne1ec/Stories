@@ -1,0 +1,9 @@
+//-(void)passBackSkipCount:(FirstFeaturedViewController *)controller didSkip:(NSString *)theSkipCount atRow:(NSInteger *)indexPath{
+//
+//    NSLog(@"This was passed back %@ at row %i", theSkipCount, indexPath);
+//
+//    FeaturedTableCell *cell2 = (FeaturedTableCell *) [self.tableView cellForRowAtIndexPath:0];
+//
+//
+//
+//}

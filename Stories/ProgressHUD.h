@@ -15,8 +15,8 @@
 #define HUD_STATUS_FONT			[UIFont boldSystemFontOfSize:16]
 #define HUD_STATUS_COLOR		[UIColor blackColor]
 
-#define HUD_SPINNER_COLOR		[UIColor colorWithRed:0.188 green:0.173 blue:0.173 alpha:1];
-#define HUD_BACKGROUND_COLOR	[UIColor colorWithWhite:0.0 alpha:0.1]
+#define HUD_SPINNER_COLOR		[UIColor grayColor] //[UIColor colorWithRed:0.188 green:0.173 blue:0.173 alpha:1];
+#define HUD_BACKGROUND_COLOR	[UIColor colorWithRed:0.984 green:0.984 blue:0.984 alpha:1]
 #define HUD_WINDOW_COLOR		[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]
 
 #define HUD_IMAGE_SUCCESS		[UIImage imageNamed:@"ProgressHUD.bundle/progresshud-success.png"]
